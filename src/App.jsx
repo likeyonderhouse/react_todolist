@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { CompList } from "./components/CompList";
+import { InputTodo } from "./components/InputTodo";
+import { YetList } from "./components/YetList";
 
 export const App = () => {
-  // console.log("change");
   const [inputText, setInputText] = useState("");
   const [yetList, setYetList] = useState(["息を吸う", "踊る"]);
   const [compList, setCompList] = useState(["発狂する"]);
@@ -10,7 +12,6 @@ export const App = () => {
   const onChangeInputText = (e) => {
     setInputText(e.target.value);
   };
-
   // 「追加」ボタンで未完了リストに追加
   const onClickAdd = () => {
     if (inputText === "") return;
@@ -48,39 +49,21 @@ export const App = () => {
 
   return (
     <>
-      <div>
-        <input
-          value={inputText}
-          onChange={onChangeInputText}
-          placeholder="Taskを追加"
-        />
-        <button onClick={onClickAdd}>追加</button>
-      </div>
+      <InputTodo
+        inputText={inputText}
+        onChange={onChangeInputText}
+        onClick={onClickAdd}
+        disabled={yetList.length >= 5}
+        yetList={yetList}
+      />
 
-      <h2>未完了リスト</h2>
-      <ul>
-        {yetList.map((todo, index) => {
-          return (
-            <li key={todo}>
-              <p>{todo}</p>
-              <button onClick={() => onClickComp(index)}>完了</button>
-              <button onClick={() => onClickDelete(index)}>削除</button>
-            </li>
-          );
-        })}
-      </ul>
+      <YetList
+        yetList={yetList}
+        onClickComp={onClickComp}
+        onClickDelete={onClickDelete}
+      />
 
-      <h2>完了済みリスト</h2>
-      <ul>
-        {compList.map((done, index) => {
-          return (
-            <li key={done}>
-              <p>{done}</p>
-              <button onClick={() => onClickReturn(index)}>未完了にする</button>
-            </li>
-          );
-        })}
-      </ul>
+      <CompList compList={compList} onClickReturn={onClickReturn} />
     </>
   );
 };
