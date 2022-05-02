@@ -1,2 +1,2 @@
-# react_todolist
+# react
 Created with CodeSandbox
